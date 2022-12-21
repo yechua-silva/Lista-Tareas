@@ -56,11 +56,24 @@ const crearHTML = () => {
     //verificamos si tweets posee algo
     if (tweets.length > 0) {
         tweets.forEach(tweet => {
+            //Agregar un boton para eliminar
+            const btnEliminar = document.createElement('a')
+            btnEliminar.classList.add('borrar-tweet');
+            btnEliminar.textContent = 'X'
+
+            //Añadir la funcion de eliminar
+            btnEliminar.onclick = () => {
+                borrarTweet(tweet.id);
+            }
+
             //crear HTML
             const li = document.createElement('LI');
 
             //añadir el texto
             li.innerText = tweet.texto
+
+            //Asignar el boton
+            li.appendChild(btnEliminar);
 
             //insetar en el HTML
             listaTwets.appendChild(li);
@@ -80,6 +93,13 @@ const limpiarHTML = () => {
         listaTwets.removeChild(listaTwets.firstChild);
     }
 }
+
+//borara tweets
+const borrarTweet = id => {
+    //deja todos menos el del id que le pasamos
+    tweets = tweets.filter( tweet => tweet.id !== id)
+    crearHTML();
+};
 //EVENTS LISTENERS
 const eventListener = () => {
     //formulario escucha cuando se hace el submit, cuando el usuario agrega un nuevo tweet
