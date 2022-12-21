@@ -66,7 +66,13 @@ const crearHTML = () => {
             listaTwets.appendChild(li);
         })
     }
+    sincronizarStorage();
 }
+
+//Agregar los tweets actuales al storage
+const sincronizarStorage = () => {
+    localStorage.setItem('tweets', JSON.stringify(tweets));
+};
 
 //limpiar HTML
 const limpiarHTML = () => {
@@ -76,8 +82,16 @@ const limpiarHTML = () => {
 }
 //EVENTS LISTENERS
 const eventListener = () => {
-    //formulario escucha cuando se hace el submit
+    //formulario escucha cuando se hace el submit, cuando el usuario agrega un nuevo tweet
     formulario.addEventListener('submit', agregarTweet)
+
+    //Cuando el documento esta listo
+    document.addEventListener('DOMContentLoaded', () => {
+        //busca el arreglo de twwets, en el caso que lo encuentre vacio, como lo transforma en string quedaria como null, por lo que no se podria agregar al HTML, por que funciona con forEach, que recorre arreglos. por eso se coloca el || [], para que en caso de que este vacio devuelva un arrreglo vacio
+        tweets = JSON.parse(localStorage.getItem('tweets')) || [];
+        console.log(tweets);
+        crearHTML();
+    });
 
 }
 eventListener();
